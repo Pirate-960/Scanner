@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Main {
+	// ALL OTHER CLASSES EXCEPT MAIN.JAVA, SCANNER.JAVA, TOKEN.JAVA CAN BE CANCELED UNLESS IF YOU GUYS WANT TO SEPERATE TOKEN HANDLING IN DIFFERENT CLASSES INSTEAD OF PUTTING ALL OF IT IN SCANNER CLASS
 	//===========================================================================================================//
 // WE CAN BUILD A NEW ONE USING FILE PROCESSING THIS LIKLY DIFFICULT TO OPERATE + PROCESSING
 	//===========================================================================================================//
