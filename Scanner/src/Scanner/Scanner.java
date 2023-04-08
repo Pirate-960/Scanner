@@ -6,11 +6,16 @@ import java.io.IOException;
 
 import Scanner.Token.TokenType;
 
+// =====================================================STRUCTURE===================================================//
+/*
+ * --------------------------------------------------------------
+import java.io.*;
+import java.util.*;
+
 public class Scanner {
 	
-	
-	private String FileName;
-	private BufferedReader Reader;
+	private final String FileName;
+	private final BufferedReader Reader;
 	private int CurrentLine = 1;
 	private int CurrentColumn = 0;
 	private char CurrentChar;
@@ -23,10 +28,6 @@ public class Scanner {
 		Advance();
 	}
 	
-	public Scanner(BufferedReader bufferReader) {
-		
-	}
-
 	private void Advance() throws IOException {
 		int Next_Char = Reader.read();
 		
@@ -56,6 +57,115 @@ public class Scanner {
 	}
 	
 	
+	private String Get_Lexeme() {
+		return FileName + ":" + CurrentLine + ":" + (CurrentColumn - 1);
+	}
+	
+	
+	private Token Brackets(char c, int line, int position) throws IOException {
+	    switch (c) {
+	    case '(':
+            return new Token(Token.TokenType.LEFTPAR, "(", line, position);
+        case ')':
+            return new Token(Token.TokenType.RIGHTPAR, ")", line, position);
+        case '[':
+            return new Token(Token.TokenType.LEFTSQUAREB, "[", line, position);
+        case ']':
+            return new Token(Token.TokenType.RIGHTSQUAREB, "]", line, position);
+        case '{':
+            return new Token(Token.TokenType.LEFTCURLYB, "{", line, position);
+        case '}':
+            return new Token(Token.TokenType.RIGHTCURLYB, "}", line, position);
+        default:
+            return null;
+		}
+	}
+	
+	private Token Number_Literals() throws IOException {
+		return null;
+		// EOF Check -> Token -> Number
+	}
+	
+	private Token Boolean_Literals() throws IOException {
+		return null;
+		// EOF Check -> Token -> Boolean (1 || 2) 
+	}
+	
+	private Token Character_Literals() throws IOException {
+		return null;
+		// EOF Check -> Token -> Character
+	}
+	
+	private Token String_Literals() throws IOException {
+		return null;
+		// EOF Check -> Token -> String
+	}
+	
+	private Token Keywords() throws IOException {
+		return null;
+		// EOF Check -> Token -> Keyword
+	}
+	
+	private Token Identifiers() throws IOException {
+		return null;
+		// EOF Check -> Token -> Identifier
+	}
+	
+}
+ */
+
+
+public class Scanner {
+	
+	
+	private String FileName;
+	private BufferedReader Reader;
+	private int CurrentLine = 1; // line of token
+	private int CurrentColumn = 0; // Column of token
+	private char CurrentChar;
+	private boolean EOF = true; //Check EOF end of file
+	
+	
+	public Scanner(String fileName) throws IOException {
+		this.FileName = fileName;
+		this.Reader = new BufferedReader(new FileReader(FileName));
+		Advance();
+	}
+	
+	public Scanner(BufferedReader bufferReader) {
+		
+	}
+	
+// Move through the chars of the input one by one line by line
+	private void Advance() throws IOException {
+		int Next_Char = Reader.read();
+		
+		if (Next_Char == -1) {
+			EOF = true;
+		} else {
+			CurrentChar = (char)Next_Char;
+			CurrentColumn++;
+			
+			if (CurrentChar == '\n') {
+				CurrentLine++;
+				CurrentColumn++;
+			}
+		}
+	}
+	
+	// Skip Comments + spaces
+	private void Skip_WhiteSpaces_And_Comments() throws IOException {
+		while (!EOF && (Character.isWhitespace(CurrentChar) || CurrentChar == '~')) {
+			if (CurrentChar == '~') {
+				do {
+					Advance();
+				} while (!EOF && CurrentChar != '\n');
+			}
+			Advance();
+		}
+	}
+	
+	// obtain token (input char) and send it depending on the type
 	private String Get_Lexeme() throws InvalidTokenException, IOException {
 		Token Token = null;
 		if (!EOF) {
@@ -83,6 +193,7 @@ public class Scanner {
 	}
 	
 	
+	// process Brackets + identify them
 	public Token BracketToken(String inputString) throws InvalidTokenException, IOException {
 	    char c = getCurrentChar();
 	    if (c == '(') {
@@ -108,7 +219,7 @@ public class Scanner {
 	    }
 	}
 
-	
+	// process numbers + identify their types
 	public static Token NumberToken(String inputString) throws InvalidTokenException {
 	    StringBuilder numberString = new StringBuilder();
 	    boolean hasDecimal = false;
@@ -147,6 +258,7 @@ public class Scanner {
 	    return new Token(TokenType.NUMBER, numberString.toString());
 	}
 	
+	// TRUE / FALSE
 	public static Token BooleanToken(String inputString) throws InvalidTokenException {
 	    if (inputString.equals("true") || inputString.equals("false")) {
 	        return new Token(TokenType.BOOLEAN, inputString);
@@ -155,7 +267,7 @@ public class Scanner {
 	    }
 	}
 	
-	
+	// Char: //, \', \'
 	public static Token CharacterToken(String inputString) throws InvalidTokenException {
 	    if (inputString.length() == 3 && inputString.charAt(0) == '\'' && inputString.charAt(2) == '\'') {
 	        char c = inputString.charAt(1);
@@ -169,7 +281,7 @@ public class Scanner {
 	    }
 	}
 	
-	
+	//String (\\, \")
 	public static Token StringToken(String inputString) throws InvalidTokenException {
 	    if (inputString.length() >= 2 && inputString.charAt(0) == '\"' && inputString.charAt(inputString.length() - 1) == '\"') {
 	        StringBuilder sb = new StringBuilder();
@@ -195,6 +307,7 @@ public class Scanner {
 	    }
 	}
 	
+	// KEYWORD -> GPT might changed later
 	public static Token KeywordToken(String inputString) {
 	    Map<String, TokenType> keywords = new HashMap<>();
 	    keywords.put("define", TokenType.DEFINE);
@@ -235,7 +348,7 @@ public class Scanner {
 	    return new Token(TokenType.IDENTIFIER, identifierString);
 	}
 	*/
-	
+	// PROCESS IDENTITFIER -> Method is true + ready for usage throw scanning
 	private Token IdentifierToken(String FileName) {
 	    StringBuilder lexeme = new StringBuilder();
 	    char c = input.peek();
@@ -301,7 +414,7 @@ public class Scanner {
 	            throw new IllegalArgumentException("Invalid keyword string: " + keywordString);
 	    }
 	}
-
+//====================================================GETTERS// SETTERS=========================================//
 	public String getFileName() {
 		return FileName;
 	}
@@ -354,7 +467,7 @@ public class Scanner {
 		return null;
 	}
 	
-	
+	//==========================================//
 	
 	
 }
@@ -579,110 +692,4 @@ public class Scanner {
  * 
  * 
  * 
- * --------------------------------------------------------------
-import java.io.*;
-import java.util.*;
-
-public class Scanner {
-	
-	private final String FileName;
-	private final BufferedReader Reader;
-	private int CurrentLine = 1;
-	private int CurrentColumn = 0;
-	private char CurrentChar;
-	private boolean EOF = false;
-	
-	
-	public Scanner(String fileName) throws IOException {
-		this.FileName = fileName;
-		this.Reader = new BufferedReader(new FileReader(FileName));
-		Advance();
-	}
-	
-	private void Advance() throws IOException {
-		int Next_Char = Reader.read();
-		
-		if (Next_Char == -1) {
-			EOF = true;
-		} else {
-			CurrentChar = (char)Next_Char;
-			CurrentColumn++;
-			
-			if (CurrentChar == '\n') {
-				CurrentLine++;
-				CurrentColumn++;
-			}
-		}
-	}
-	
-	
-	private void Skip_WhiteSpaces_And_Comments() throws IOException {
-		while (!EOF && (Character.isWhitespace(CurrentChar) || CurrentChar == '~')) {
-			if (CurrentChar == '~') {
-				do {
-					Advance();
-				} while (!EOF && CurrentChar != '\n');
-			}
-			Advance();
-		}
-	}
-	
-	
-	private String Get_Lexeme() {
-		return FileName + ":" + CurrentLine + ":" + (CurrentColumn - 1);
-	}
-	
-	
-	private Token Brackets(char c, int line, int position) throws IOException {
-	    switch (c) {
-	    case '(':
-            return new Token(Token.TokenType.LEFTPAR, "(", line, position);
-        case ')':
-            return new Token(Token.TokenType.RIGHTPAR, ")", line, position);
-        case '[':
-            return new Token(Token.TokenType.LEFTSQUAREB, "[", line, position);
-        case ']':
-            return new Token(Token.TokenType.RIGHTSQUAREB, "]", line, position);
-        case '{':
-            return new Token(Token.TokenType.LEFTCURLYB, "{", line, position);
-        case '}':
-            return new Token(Token.TokenType.RIGHTCURLYB, "}", line, position);
-        default:
-            return null;
-		}
-	}
-	
-	private Token Number_Literals() throws IOException {
-		return null;
-		// EOF Check -> Token -> Number
-	}
-	
-	private Token Boolean_Literals() throws IOException {
-		return null;
-		// EOF Check -> Token -> Boolean (1 || 2) 
-	}
-	
-	private Token Character_Literals() throws IOException {
-		return null;
-		// EOF Check -> Token -> Character
-	}
-	
-	private Token String_Literals() throws IOException {
-		return null;
-		// EOF Check -> Token -> String
-	}
-	
-	private Token Keywords() throws IOException {
-		return null;
-		// EOF Check -> Token -> Keyword
-	}
-	
-	private Token Identifiers() throws IOException {
-		return null;
-		// EOF Check -> Token -> Identifier
-	}
-	
-}
- */
-
-
+//
