@@ -61,7 +61,7 @@ public class Scanner {
 		return FileName + ":" + CurrentLine + ":" + (CurrentColumn - 1);
 	}
 	
-	
+	// Can be changed
 	private Token Brackets(char c, int line, int position) throws IOException {
 	    switch (c) {
 	    case '(':
