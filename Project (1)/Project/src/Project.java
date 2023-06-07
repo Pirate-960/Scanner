@@ -396,7 +396,7 @@ public class Project {
             return false;
         } //'a'
         if (currentLine.length() - start < 3) return false; // minimum length should be 3, i.e., 'a'
-        int last = getSizeOf(start, currentLine) - 1; // find the last index before space or bracket
+        int last = start + getSizeOf(start, currentLine) - 1; // find the last index before space or bracket
         if (currentLine.charAt(start + 2) == '\'') {
             if (currentLine.charAt(start + 1) == '\'')
                 return false; // empty character is not allowed
